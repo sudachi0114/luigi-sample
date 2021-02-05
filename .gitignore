@@ -6,3 +6,6 @@ venv/
 
 # intermidiate file place
 mid/
+
+# output file place
+output/
