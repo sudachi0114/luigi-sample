@@ -15,6 +15,13 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+## main 処理
+
+```sh
+python main.py
+```
+
+
 ## Luigi Task 定義 Tips 📝 :
 
 * `Luigi` では「入力 ➡️  処理 ➡️  出力」という一連の処理をひとまとまりとして扱う。
