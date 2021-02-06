@@ -21,6 +21,12 @@ pip install -r requirements.txt
 python main.py
 ```
 
+* **CAUTION:** もし `output/models/model.pkl` がないと言われたら""
+
+```sh
+mkdir output/models
+```
+
 
 ## Luigi Task 定義 Tips 📝 :
 
