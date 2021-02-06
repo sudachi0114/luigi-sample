@@ -28,3 +28,4 @@ pip install -r requirements.txt
 ## Links
 * [参考サイト](https://ohke.hateblo.jp/entry/2018/04/07/230000)
 * [Luigi リポジトリ](https://github.com/spotify/luigi)
+* [機械学習で便利なluigiフレームワークの紹介](https://www.m3tech.blog/entry/2018/10/17/105115)
