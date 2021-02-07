@@ -90,18 +90,23 @@ class CreateModel(luigi.Task):
             print(iris_dataset.train_x)
 
             model = svm.SVC()  # なんだこれ..??
-            # model.fit(train_x, train_y)
+            model.fit(
+                iris_dataset.train_x,
+                iris_dataset.train_y
+            )
 
             # 正解率の算出
-            # print(f"[train accuracy] {model.score(train_x, train_y)}")
-            # print(f"[test accuracy] {model.score(test_x, test_y)}")
+            print(f"[train accuracy] {model.score(iris_dataset.train_x, iris_dataset.train_y)}")
+            print(f"[test accuracy] {model.score(iris_dataset.test_x, iris_dataset.test_y)}")
             # TODO: ここも、テストとして、別タスクに切り出したい
 
-            pickle.dump(model, fb)
-
+            with self.output().open('w') as pf:
+                pickle.dump(model, pf)
 
     def output(self):
         # バイナリファイルを出力する場合には format に luigi.format.NopFormat を指定するらしい
+        # return luigi.LocalTarget(self.DATASET_PATH, format=luigi.format.Nop)
+        #   Nop でもいいっぽい??
         return luigi.LocalTarget(self.SAVE_MODEL_PATH, format=luigi.format.NopFormat)
 
 
