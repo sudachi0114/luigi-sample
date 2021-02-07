@@ -42,9 +42,11 @@ mkdir output/models
 
 
 ## Links
-* [参考サイト](https://ohke.hateblo.jp/entry/2018/04/07/230000)
+* [Python: Luigiでデータパイプラインを作る (基本参考サイト)](https://ohke.hateblo.jp/entry/2018/04/07/230000)
 * [Luigi リポジトリ](https://github.com/spotify/luigi)
 * [機械学習で便利なluigiフレームワークの紹介](https://www.m3tech.blog/entry/2018/10/17/105115)
+
+* [Pythonでパイプライン処理をする](https://qiita.com/yujikawa/items/208049ed2469f8e3fdd1)
 
 * [luigiを使ってみた](https://www.nogawanogawa.com/entry/luigi_intro)
 * [Python, LuigiでPipeline管理の基本を学ぶ](https://qiita.com/yuusei/items/6ba669a781b9f8ec7f63)
