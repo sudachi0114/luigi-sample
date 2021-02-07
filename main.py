@@ -4,6 +4,8 @@ import pandas
 from sklearn import svm
 import pickle
 
+from Dataset import Dataset
+
 # iris data をダウンロードして、CSV ファイルに出力するタスク
 class Download2CSV(luigi.Task):
     task_namespace = 'iris_tasks'
@@ -21,6 +23,55 @@ class Download2CSV(luigi.Task):
         return luigi.LocalTarget(self.MID_ORIGINAL_PATH)
 
 
+class CreateDataset(luigi.Task):
+    task_namespace = 'iris_tasks'
+
+    DATASET_PATH = luigi.Parameter()
+
+    def requires(self):
+        return Download2CSV()
+
+    def output(self):
+        return luigi.LocalTarget(self.DATASET_PATH, format=luigi.format.Nop)  # pickle で output する場合はこの format を指定する
+
+    def run(self):
+        data = pandas.read_csv(self.input().path, header=None)
+        # print(data)
+
+        x = data.iloc[:, [0, 1, 2, 3]]
+        y = data.iloc[:, 4].replace({
+            'Iris-setosa': 0,
+            'Iris-versicolor': 1,
+            'Iris-virginica': 2
+        })
+
+        # print(len(x), len(y))
+
+        # train / test に分ける
+        train_x, train_y = x[:120], y[:120]
+        test_x, test_y = x[120:], y[120:]
+
+        print("----- train -----\n", train_x, len(train_x))
+        print("----- test  -----\n", test_x, len(test_x))
+
+        iris_dataset = Dataset()
+
+        iris_dataset.train_x = train_x
+        iris_dataset.train_y = train_y
+
+        iris_dataset.test_x = test_x
+        iris_dataset.test_y = test_y
+
+        with self.output().open('w') as p:
+            p.write( pickle.dumps(iris_dataset, protocol=pickle.HIGHEST_PROTOCOL) )
+            # output はファイルを介して行わなければいけないのか...??
+            #    データをそのまま次のタスクに投げ渡したい... (return 的なことがしたい)
+
+        # self.output = iris_dataset
+        # print(self.output(), type(self.output()) )
+        #    output() という関数を書かないと、空のlist [] を返すだけっぽい..??
+
+
 class CreateModel(luigi.Task):
     task_namespace = 'iris_tasks'
 
@@ -29,39 +80,21 @@ class CreateModel(luigi.Task):
     # 透明性とかもちょっと怪しい感じする (self.input() とか、データ・中間生成物の受け渡しがちょっとわかりにくい, 可読性低いような気が...しないでもない...)
 
     def requires(self):
-        return Download2CSV()
-
+        return CreateDataset()
 
     def run(self):
-        with open(self.output().path, 'wb') as fb:
-            data = pandas.read_csv(self.input().path, header=None)
-            # print(data)
+        with self.input().open('r') as infile:
+            iris_dataset = pickle.load(infile)
 
-            # TODO: この辺を前処理として、別タスクに切り出したい..
-            x = data.iloc[:, [0, 1, 2, 3]]
-            y = data.iloc[:, 4].replace({
-                'Iris-setosa': 0,
-                'Iris-versicolor': 1,
-                'Iris-virginica': 2
-            })
-
-            # print(len(x), len(y))
-
-            # train / test に分ける
-            train_x, train_y = x[:120], y[:120]
-            test_x, test_y = x[120:], y[120:]
-
-            # print(train_x, len(train_x))
-            # print(test_x, len(test_x))
-
+            print(iris_dataset)
+            print(iris_dataset.train_x)
 
             model = svm.SVC()  # なんだこれ..??
-            model.fit(train_x, train_y)
-
+            # model.fit(train_x, train_y)
 
             # 正解率の算出
-            print(f"[train accuracy] {model.score(train_x, train_y)}")
-            print(f"[test accuracy] {model.score(test_x, test_y)}")
+            # print(f"[train accuracy] {model.score(train_x, train_y)}")
+            # print(f"[test accuracy] {model.score(test_x, test_y)}")
             # TODO: ここも、テストとして、別タスクに切り出したい
 
             pickle.dump(model, fb)
@@ -76,8 +109,11 @@ if __name__ == '__main__':
     # luigi.cfg という決まった名前 (?) なら、path の設定はいらないかも..??
     # luigi.configuration.LuigiConfigParser.add_config_path('./luigi.cfg')
 
+    """
     luigi.run([
         # 'iris_tasks.Download2CSV',
         'iris_tasks.CreateModel',
         '--local-scheduler'
     ])
+    """
+    luigi.run()
