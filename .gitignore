@@ -4,8 +4,11 @@
 # venv
 venv/
 
-# intermidiate file place
+# these directory created by main program
+datasets/
 mid/
-
-# output file place
 output/
+
+
+# pycache
+__pycache__/
