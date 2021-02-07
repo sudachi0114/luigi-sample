@@ -82,43 +82,42 @@ class CreateModel(luigi.Task):
     def requires(self):
         return CreateDataset()
 
-    def run(self):
-        with self.input().open('r') as infile:
-            iris_dataset = pickle.load(infile)
-
-            print(iris_dataset)
-            print(iris_dataset.train_x)
-
-            model = svm.SVC()  # なんだこれ..??
-            model.fit(
-                iris_dataset.train_x,
-                iris_dataset.train_y
-            )
-
-            # 正解率の算出
-            print(f"[train accuracy] {model.score(iris_dataset.train_x, iris_dataset.train_y)}")
-            print(f"[test accuracy] {model.score(iris_dataset.test_x, iris_dataset.test_y)}")
-            # TODO: ここも、テストとして、別タスクに切り出したい
-
-            with self.output().open('w') as pf:
-                pickle.dump(model, pf)
-
     def output(self):
-        # バイナリファイルを出力する場合には format に luigi.format.NopFormat を指定するらしい
-        # return luigi.LocalTarget(self.DATASET_PATH, format=luigi.format.Nop)
-        #   Nop でもいいっぽい??
-        return luigi.LocalTarget(self.SAVE_MODEL_PATH, format=luigi.format.NopFormat)
+        # バイナリファイルを出力する場合には
+        #   format に luigi.format.NopFormat ( or Nop ?? ) を指定するらしい
+        #   !! WARNING: NopFormat と Nop だと出力の書き方が異なるらしい
+        return luigi.LocalTarget(self.SAVE_MODEL_PATH, format=luigi.format.Nop)
+
+    def run(self):
+        infile = self.input().open('r')
+        iris_dataset = pickle.load(infile)
+
+        print(iris_dataset)
+        print(iris_dataset.train_x)
+
+        model = svm.SVC()  # なんだこれ..??
+        model.fit(
+            iris_dataset.train_x,
+            iris_dataset.train_y
+        )
+
+        # 正解率の算出
+        print(f"[train accuracy] {model.score(iris_dataset.train_x, iris_dataset.train_y)}")
+        print(f"[test accuracy] {model.score(iris_dataset.test_x, iris_dataset.test_y)}")
+        # TODO: ここも、テストとして、別タスクに切り出したい
+
+        with self.output().open('w') as pf:
+            pf.write( pickle.dumps(model, protocol=pickle.HIGHEST_PROTOCOL) )
 
 
 if __name__ == '__main__':
     # luigi.cfg という決まった名前 (?) なら、path の設定はいらないかも..??
     # luigi.configuration.LuigiConfigParser.add_config_path('./luigi.cfg')
 
-    """
     luigi.run([
-        # 'iris_tasks.Download2CSV',
         'iris_tasks.CreateModel',
         '--local-scheduler'
     ])
-    """
-    luigi.run()
+    # luigi.run()
+    #   こっちで実行する場合は
+    #   $ python main.py iris_tasks.CreateModel --local-scheduler
