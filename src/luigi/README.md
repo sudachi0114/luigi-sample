@@ -43,6 +43,17 @@ mkdir output/models
 
 ### Execution help:
 
+#### Main:
+
+* How to execute `src/luigi/main.py` ?
+
+```shell
+python src/luigi/main.py
+```
+
+
+#### Demo:
+
 * How to execute `src/luigi/demo/task_sample/sample.py` ?
 
 ```shell
