@@ -111,8 +111,11 @@ class CreateModel(luigi.Task):
 
 
 if __name__ == '__main__':
-    # luigi.cfg という決まった名前 (?) なら、path の設定はいらないかも..??
-    # luigi.configuration.LuigiConfigParser.add_config_path('./luigi.cfg')
+    # 以下の条件であれば、cfg ファイルへの PATH の設定はいらない
+    #   1. 設定ファイルのファイル名が luigi.cfg である
+    #   2. 実行するときと同じディレクトリにある
+    #       (つまり ./luigi.cfg と参照できる場所から実行するとき)
+    luigi.configuration.LuigiConfigParser.add_config_path('./src/luigi/luigi.cfg')
 
     luigi.run([
         'iris_tasks.CreateModel',
