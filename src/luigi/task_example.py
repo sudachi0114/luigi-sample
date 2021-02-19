@@ -2,7 +2,7 @@ import luigi
 import time
 
 class Task1(luigi.Task):
-    task_namespace = 'tasks'
+    task_namespace = 'my_tasks'
 
     def run(self):
         print("Task1: run")
@@ -15,7 +15,7 @@ class Task1(luigi.Task):
 
 
 class Task2(luigi.Task):
-    task_namespace = 'tasks'
+    task_namespace = 'my_tasks'
 
     def requires(self):
         print("Task2: requires")
@@ -27,7 +27,7 @@ class Task2(luigi.Task):
             task1_text = mid.read()
 
             target.write(task1_text)
-            target.write(f"This file was changed by Task2 at {time.asctime()}.")
+            target.write(f"This file was changed by Task2 at {time.asctime()}.\n")
 
     def output(self):
         print("Task2: output")
@@ -36,6 +36,6 @@ class Task2(luigi.Task):
 
 if __name__ == "__main__":
     luigi.run([
-        'tasks.Task2',
+        'my_tasks.Task2',
         '--local-scheduler'
     ])
