@@ -43,13 +43,22 @@ mkdir output/models
 
 ### Execution help:
 
-* How to execute `task_example.py` ?
+* How to execute `src/luigi/demo/task_sample/sample.py` ?
 
 ```shell
-python src/luigi/task_example.py
+python src/luigi/demo/task_sample/sample.py 
 ```
 
 then create `mid/task1.txt` & `output/task2.txt`.
+
+
+* How to execute `src/luigi/demo/cfg/cfg_sample.py` ?
+
+```shell
+python src/luigi/demo/cfg/cfg_sample.py 
+```
+
+then create `output/cfg_output.txt`.
 
 
 ## Links
