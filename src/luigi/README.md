@@ -41,6 +41,17 @@ mkdir output/models
 
 
 
+### Execution help:
+
+* How to execute `task_example.py` ?
+
+```shell
+python src/luigi/task_example.py
+```
+
+then create `mid/task1.txt` & `output/task2.txt`.
+
+
 ## Links
 * [Python: Luigiでデータパイプラインを作る (基本参考サイト)](https://ohke.hateblo.jp/entry/2018/04/07/230000)
 * [Luigi リポジトリ](https://github.com/spotify/luigi)
