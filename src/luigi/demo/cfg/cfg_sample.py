@@ -7,7 +7,7 @@ class GetParameterCFGfile(luigi.Task):
         pass
 
     def output(self):
-        return luigi.LocalTarget("./output/output_cfg.txt")  # この成果物が存在する以上は、タスクを重複して実行することはしないらしい。
+        return luigi.LocalTarget("./output/cfg_sample.txt")  # この成果物が存在する以上は (cfg によって渡されるパラメータが変更されたとしても) タスクを重複して実行することはしないらしい。
 
     def run(self):
         with self.output().open('w') as f:
