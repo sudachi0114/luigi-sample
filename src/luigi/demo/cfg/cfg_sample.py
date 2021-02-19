@@ -14,7 +14,7 @@ class GetParameterCFGfile(luigi.Task):
             f.write(f"{self.param} World.\n")
 
 if __name__ == "__main__":
-    luigi.configuration.LuigiConfigParser.add_config_path('./sample.cfg')
+    luigi.configuration.LuigiConfigParser.add_config_path('./src/luigi/demo/cfg/sample.cfg')
 
     """ ここで run に list で渡しているパラメータは、実行時にコマンドラインで渡すこともできる
         like: $ python source.py GetParameterCFGfile --local-scheduler
