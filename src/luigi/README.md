@@ -3,11 +3,14 @@ python で pipeline 処理を実現するためのライブラリ `Luigi` を試
 
 > パイプライン → 配管工 → ルイージ と読むらしい。
 
+スクリプトは全て、プロジェクトルートから実行する。
+
+
 ## Python 仮想環境 アクティベート
 
 ```sh
 python -m venv venv
-source ./venv/bin/activate
+source venv/bin/activate
 ```
 
 ### library update && install
@@ -54,13 +57,15 @@ python src/luigi/main.py
 
 #### Demo:
 
+Luigi の機能の一部や、試し使いするために作成したプログラムたちです。
+
 * How to execute `src/luigi/demo/task_sample/sample.py` ?
 
 ```shell
 python src/luigi/demo/task_sample/sample.py 
 ```
 
-then create `mid/task1.txt` & `output/task2.txt`.
+➡️  then create `mid/task1.txt` & `output/task2.txt`.
 
 
 * How to execute `src/luigi/demo/cfg/cfg_sample.py` ?
@@ -69,7 +74,8 @@ then create `mid/task1.txt` & `output/task2.txt`.
 python src/luigi/demo/cfg/cfg_sample.py 
 ```
 
-then create `output/cfg_output.txt`.
+➡️  then create `output/cfg_output.txt`.
+
 
 
 ## Links
